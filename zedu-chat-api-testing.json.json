@@ -1,0 +1,744 @@
+{
+  "info": {
+    "_postman_id": "6bb512af-6c8d-4329-ab33-b8833980d7e8",
+    "name": "Zedu Chat API testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45499124",
+    "_collection_link": "https://go.postman.co/collection/45499124-6bb512af-6c8d-4329-ab33-b8833980d7e8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Registration",
+      "item": [
+        {
+          "name": "Register a new user with valid details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 - Account Created', () => {\r",
+                  "  pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test('Response returns user created successfully message', () => {\r",
+                  "  pm.expect(json).to.have.property('message');\r",
+                  "  pm.expect(json.message).to.be.a('string').and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Password is not exposed in response', () => {\r",
+                  "  pm.expect(json).to.not.have.property('password');\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"Bigwiz\",\r\n  \"email\": \"whyalwaysme@example.com\",\r\n  \"password\": \"Emilokan2026!\",\r\n  \"first_name\": \"Cold\",\r\n  \"last_name\": \"Palmer\",\r\n  \"phone_number\": \"07098765432\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register User with Invalid Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has error status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"email address is invalid\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 400\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"starboy\",\r\n  \"email\": \"whyalwaysme.com\",\r\n  \"password\": \"obidient2026!\",\r\n  \"first_name\": \"eden\",\r\n  \"last_name\": \"hazard\",\r\n  \"phone_number\": \"07098765431\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register with existing email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has error status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"email address already exist, use another email or signin\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 400\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"mutay\",\r\n  \"email\": \"whyalwaysme@example.com\",\r\n  \"password\": \"vision2020!\",\r\n  \"first_name\": \"leo\",\r\n  \"last_name\": \"Messi\",\r\n  \"phone_number\": \"07098765435\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register with missing email field",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has error status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"email address already exist, use another email or signin\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 400\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"mutay\",\r\n  \"email\": \"whyalwaysme@example.com\",\r\n  \"password\": \"vision2020!\",\r\n  \"first_name\": \"leo\",\r\n  \"last_name\": \"Messi\",\r\n  \"phone_number\": \"07098765435\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "Login with valid details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "pm.test(\"Status code is 200\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains access_token\", () => {\r",
+                  "  const body = pm.response.json();\r",
+                  "  pm.expect(body.data).to.have.property(\"access_token\");\r",
+                  "\r",
+                  "  if (body.data?.access_token) {\r",
+                  "    pm.collectionVariables.set(\"token\", body.data.access_token);\r",
+                  "  }\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status is success\", () => {\r",
+                  "  const body = pm.response.json();\r",
+                  "  pm.expect(body.status).to.equal(\"success\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Success message\", () => {\r",
+                  "  const body = pm.response.json();\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"login\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains user id\", () => {\r",
+                  "  const body = pm.response.json();\r",
+                  "  pm.expect(body.data.user).to.have.property(\"id\");\r",
+                  "\r",
+                  "  if (body.data?.user?.id) {\r",
+                  "    pm.collectionVariables.set(\"userId\", body.data.user.id);\r",
+                  "  }\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains user id\", () => {\r",
+                  "  const body = pm.response.json();\r",
+                  "  pm.expect(body.data.user.organisation).to.have.property(\"id\");\r",
+                  "\r",
+                  "  if (body.data?.user?.organisation?.id) {\r",
+                  "    pm.collectionVariables.set(\"org_id\", body.data.user.organisation.id);\r",
+                  "  }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"whyalwaysme@example.com\",\r\n\"password\": \"Emilokan2026!\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login with Invalid password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has error status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"invalid email and password supplied\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 400\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"whyalwaysme@example.com\",\r\n\"password\": \"Emilokan!\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login with Invalid email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has error status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"invalid credentials\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 400\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"dareme@example.com\",\r\n\"password\": \"Emilokan2026!\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login with empty field",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "const errors = body.error;\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has error status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"validation failed\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 400\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Email error message\", () => {\r",
+                  "  pm.expect(errors[\"LoginRequestModel.email\"].toLowerCase())\r",
+                  "    .to.include(\"email is a required\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Password error message\", () => {\r",
+                  "  pm.expect(errors[\"LoginRequestModel.password\"].toLowerCase())\r",
+                  "    .to.include(\"password is a required\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"\",\r\n\"password\": \"\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Password",
+      "item": [
+        {
+          "name": "Password reset link with valid email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"whyalwaysme@example.com\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/password-reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "password-reset"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Password reset with unregistered email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 404\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has error status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"user not found\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 404\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(404);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"ylwaysme@example.com\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/password-reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "password-reset"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Password reset with invalid email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 422\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(422);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has error status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"validation failed\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 422\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(422);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"error message\", () => {\r",
+                  "  pm.expect(body.error[\"ForgotPasswordRequestModel.email\"]).to.include(\"email is a required\");\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"whyalwaysme.com\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/password-reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "password-reset"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Email Verification",
+      "item": [
+        {
+          "name": "New Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tests\r",
+                  "const body = pm.response.json();\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", () => {\r",
+                  "  pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has success status\", () => {\r",
+                  "  pm.expect(body.status).to.equal(\"success\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Message is correct\", () => {\r",
+                  "  pm.expect(body.message.toLowerCase()).to.include(\"verification token sent to email\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code field is 200\", () => {\r",
+                  "  pm.expect(body.status_code).to.equal(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"whyalwaysme@example.com\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/email-request",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "email-request"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "org_id",
+      "value": ""
+    }
+  ]
+}
